@@ -10,6 +10,9 @@ public class Magnemite {
     public static void main(String[] args) {
 
         Ui ui = new Ui();
+        Storage storage = new Storage("./data/duke.txt");
+        ArrayList<Task> tasks = storage.load();
+
         ui.line();
         System.out.println("Hello! I'm Magnemite");
         System.out.println("What can I do for you?");
@@ -18,8 +21,6 @@ public class Magnemite {
         Scanner in = new Scanner(System.in);
         String line;
         int num;
-
-        ArrayList<Task> tasks = new ArrayList<>();
 
         do {
 
@@ -62,6 +63,7 @@ public class Magnemite {
                     }
 
                     tasks.get(num - 1).mark();
+                    storage.save(tasks);
 
                     ui.line();
                     System.out.println("Great! I've marked this task as done:");
@@ -84,6 +86,7 @@ public class Magnemite {
                     }
 
                     tasks.get(num - 1).unmark();
+                    storage.save(tasks);
 
                     ui.line();
                     System.out.println("Alright! I've marked this task as not done yet:");
@@ -106,6 +109,7 @@ public class Magnemite {
                     }
 
                     Task removed = tasks.remove(num - 1);
+                    storage.save(tasks);
 
                     ui.line();
                     System.out.println("Noted. I've removed this task:");
@@ -123,6 +127,7 @@ public class Magnemite {
                     String taskDesc = line.substring(TODO_OFFSET).trim();
 
                     tasks.add(new Todo(taskDesc));
+                    storage.save(tasks);
 
                     ui.line();
                     System.out.println("I've added this todo:");
@@ -141,6 +146,7 @@ public class Magnemite {
                     String[] parts = taskDesc.split(" /by ");
 
                     tasks.add(new Deadline(parts[0].trim(), parts[1].trim()));
+                    storage.save(tasks);
 
                     ui.line();
                     System.out.println("I've added this deadline:");
@@ -162,6 +168,7 @@ public class Magnemite {
                             parts[0].trim(),
                             parts[1].trim(),
                             parts[2].trim()));
+                    storage.save(tasks);
 
                     ui.line();
                     System.out.println("I've added this event:");
