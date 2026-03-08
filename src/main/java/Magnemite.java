@@ -3,10 +3,6 @@ import java.util.Scanner;
 
 public class Magnemite {
 
-    private static final int TODO_OFFSET = 5;
-    private static final int DEADLINE_OFFSET = 9;
-    private static final int EVENT_OFFSET = 6;
-
     public static void main(String[] args) {
 
         Ui ui = new Ui();
@@ -20,7 +16,6 @@ public class Magnemite {
 
         Scanner in = new Scanner(System.in);
         String line;
-        int num;
 
         do {
 
@@ -28,11 +23,13 @@ public class Magnemite {
 
             try {
 
-                if (line.equals("bye")) {
+                String command = Parser.getCommand(line);
+
+                if (command.equals("bye")) {
                     break;
                 }
 
-                else if (line.equals("list")) {
+                else if (command.equals("list")) {
 
                     ui.line();
 
@@ -48,15 +45,9 @@ public class Magnemite {
                     ui.line();
                 }
 
-                else if (line.startsWith("mark")) {
+                else if (command.equals("mark")) {
 
-                    String[] parts = line.split(" ");
-
-                    if (parts.length < 2) {
-                        throw new DukeException("Please specify the task number to mark.");
-                    }
-
-                    num = Integer.parseInt(parts[1]);
+                    int num = Parser.getTaskNumber(line);
 
                     if (num <= 0 || num > tasks.size()) {
                         throw new DukeException("That task number does not exist.");
@@ -71,15 +62,9 @@ public class Magnemite {
                     ui.line();
                 }
 
-                else if (line.startsWith("unmark")) {
+                else if (command.equals("unmark")) {
 
-                    String[] parts = line.split(" ");
-
-                    if (parts.length < 2) {
-                        throw new DukeException("Please specify the task number to unmark.");
-                    }
-
-                    num = Integer.parseInt(parts[1]);
+                    int num = Parser.getTaskNumber(line);
 
                     if (num <= 0 || num > tasks.size()) {
                         throw new DukeException("That task number does not exist.");
@@ -94,15 +79,9 @@ public class Magnemite {
                     ui.line();
                 }
 
-                else if (line.startsWith("delete")) {
+                else if (command.equals("delete")) {
 
-                    String[] parts = line.split(" ");
-
-                    if (parts.length < 2) {
-                        throw new DukeException("Please specify the task number to delete.");
-                    }
-
-                    num = Integer.parseInt(parts[1]);
+                    int num = Parser.getTaskNumber(line);
 
                     if (num <= 0 || num > tasks.size()) {
                         throw new DukeException("That task number does not exist.");
@@ -118,15 +97,11 @@ public class Magnemite {
                     ui.line();
                 }
 
-                else if (line.startsWith("todo")) {
+                else if (command.equals("todo")) {
 
-                    if (line.length() <= TODO_OFFSET) {
-                        throw new DukeException("A todo must have a description.");
-                    }
+                    String desc = Parser.parseTodo(line);
 
-                    String taskDesc = line.substring(TODO_OFFSET).trim();
-
-                    tasks.add(new Todo(taskDesc));
+                    tasks.add(new Todo(desc));
                     storage.save(tasks);
 
                     ui.line();
@@ -136,14 +111,9 @@ public class Magnemite {
                     ui.line();
                 }
 
-                else if (line.startsWith("deadline")) {
+                else if (command.equals("deadline")) {
 
-                    if (!line.contains(" /by ")) {
-                        throw new DukeException("Deadline format: deadline <description> /by <date>");
-                    }
-
-                    String taskDesc = line.substring(DEADLINE_OFFSET);
-                    String[] parts = taskDesc.split(" /by ");
+                    String[] parts = Parser.parseDeadline(line);
 
                     tasks.add(new Deadline(parts[0].trim(), parts[1].trim()));
                     storage.save(tasks);
@@ -155,19 +125,11 @@ public class Magnemite {
                     ui.line();
                 }
 
-                else if (line.startsWith("event")) {
+                else if (command.equals("event")) {
 
-                    if (!line.contains(" /from ") || !line.contains(" /to ")) {
-                        throw new DukeException("Event format: event <description> /from <start> /to <end>");
-                    }
+                    String[] parts = Parser.parseEvent(line);
 
-                    String taskDesc = line.substring(EVENT_OFFSET);
-                    String[] parts = taskDesc.split(" /from | /to ");
-
-                    tasks.add(new Event(
-                            parts[0].trim(),
-                            parts[1].trim(),
-                            parts[2].trim()));
+                    tasks.add(new Event(parts[0].trim(), parts[1].trim(), parts[2].trim()));
                     storage.save(tasks);
 
                     ui.line();
@@ -186,12 +148,6 @@ public class Magnemite {
                 ui.line();
                 System.out.println(e.getMessage());
                 ui.line();
-
-            } catch (NumberFormatException e) {
-
-                ui.line();
-                System.out.println("Task number must be a valid integer.");
-                ui.line();
             }
 
         } while (true);
@@ -200,3 +156,4 @@ public class Magnemite {
         ui.line();
     }
 }
+
