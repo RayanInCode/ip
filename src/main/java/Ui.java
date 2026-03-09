@@ -1,4 +1,6 @@
 public class Ui {
+
+    // Class to format program output
     void line() {
         System.out.println("____________________________________________________________");
     }
