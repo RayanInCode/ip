@@ -1,14 +1,14 @@
 
 ---
 
-# Duke Chatbot User Guide
+# Magnemite Chatbot User Guide
 
-## Duke – Task Management Chatbot
+## Magnemite – Task Management Chatbot
 
-**Duke** is a simple chatbot that helps you manage your tasks efficiently.
+**Magnemite** is a simple chatbot that helps you manage your tasks efficiently.
 You can add tasks, mark them as done, delete them, and search tasks using easy text commands.
 
-Duke runs in a command-line interface where you interact with the chatbot by typing commands.
+Magnemite runs in a command-line interface where you interact with the chatbot by typing commands.
 
 ---
 
@@ -25,14 +25,14 @@ Duke runs in a command-line interface where you interact with the chatbot by typ
 
 # Getting Started
 
-1. Run the Duke program.
-2. Duke will display a welcome message.
+1. Run the Magnemite program.
+2. Magnemite will display a welcome message.
 3. Enter commands to manage your tasks.
 
 Example:
 
 ```
-Hello! I'm Duke.
+Hello! I'm Magnemite.
 What can I do for you?
 ```
 
@@ -93,13 +93,13 @@ deadline Submit report /by Friday
 Add an event occurring at a specific time.
 
 ```
-event <task description> /at <time>
+event <task description> /from <start> /to <end>
 ```
 
 Example:
 
 ```
-event Project meeting /at Monday 2pm
+event Project meeting /from Monday /to Thursday
 ```
 
 ---
@@ -112,7 +112,7 @@ To see all saved tasks:
 list
 ```
 
-Duke will display all tasks along with their status.
+Magnemite will display all tasks along with their status.
 
 ---
 
@@ -174,7 +174,7 @@ find meeting
 
 ---
 
-# Exiting Duke
+# Exiting Magnemite
 
 To exit the chatbot:
 
@@ -193,7 +193,7 @@ Bye. Hope to see you again soon!
 # Notes
 
 * Task numbers correspond to the numbers shown in the `list` command.
-* Duke automatically saves tasks.
+* Magnemite automatically saves tasks.
 * Tasks will still be available the next time you run the program.
 
 ---
